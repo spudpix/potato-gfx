@@ -1,4 +1,2 @@
-# First Triangle
-First triangle in OpenGL
-
-Everything is in main.cpp
+# Potato GFX
+This is the repo I will be using to follow the LearnOpenGL tutorial.
