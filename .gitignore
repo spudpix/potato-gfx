@@ -33,4 +33,6 @@
 
 # Directories
 out/
+
+# IDE
 /.vs
