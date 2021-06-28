@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "shader.h"
+/*
 //-------------------------------------------------
 // Shader source code stored as char arrays
 //-------------------------------------------------
@@ -21,6 +23,7 @@ const char* fragmentShaderCode = "#version 450 core\n"
 "   FragColor = vec4(1.0f, 0.9f, 0.5f, 1.0f);\n"
 "}\n\0";
 
+*/
 int main()
 {
 	// GLFW initialization and specifiying OpenGL window context version 
@@ -51,7 +54,7 @@ int main()
 
 	// OpenGL version info and GPU currently in use
 	std::cout << glGetString(GL_RENDERER) << std::endl;
-	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "OPENGL VERSION: " << glGetString(GL_VERSION) << std::endl;
 
 	//-------------------------------------------------
 	// Shader compile functions
@@ -62,6 +65,8 @@ int main()
 	unsigned int vertexShader, fragmentShader, shaderProgram;
 	int status;
 	char log[1024];
+
+    /*
 
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderCode, NULL);
@@ -96,6 +101,11 @@ int main()
 	
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+
+    */
+
+    // /!\ This is relative to the specific build path of the IDE, change accordingly
+    Shader ShaderLoader("../../potato-gfx/shaders/vertex.glsl", "../../potato-gfx/shaders/fragment.glsl");
 
 	//-------------------------------------------------
 	// Vertex data
@@ -146,7 +156,8 @@ int main()
 		glClearColor(0.5f, 0.8f, 0.9f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shaderProgram);
+        ShaderLoader.use();
+        //glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -158,7 +169,7 @@ int main()
 
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderProgram);
+    //glDeleteProgram(shaderProgram);
 
 	glfwTerminate();
 
