@@ -4,26 +4,7 @@
 #include <iostream>
 
 #include "shader.h"
-/*
-//-------------------------------------------------
-// Shader source code stored as char arrays
-//-------------------------------------------------
 
-const char* vertexShaderCode = "#version 450 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-
-const char* fragmentShaderCode = "#version 450 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(1.0f, 0.9f, 0.5f, 1.0f);\n"
-"}\n\0";
-
-*/
 int main()
 {
 	// GLFW initialization and specifiying OpenGL window context version 
@@ -60,51 +41,7 @@ int main()
 	// Shader compile functions
 	//-------------------------------------------------
 
-	// This is just a basic example on how to handle shaders in OpenGL
-
-	unsigned int vertexShader, fragmentShader, shaderProgram;
-	int status;
-	char log[1024];
-
-    /*
-
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderCode, NULL);
-	glCompileShader(vertexShader);
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-	if (!status)
-	{
-		glGetShaderInfoLog(vertexShader, 1024, NULL, log);
-		std::cout << "Error! Vertex shader compilation failed!" << std::endl;
-	}
-
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderCode, NULL);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
-	if (!status)
-	{
-		glGetShaderInfoLog(fragmentShader, 1024, NULL, log);
-		std::cout << "Error! Fragment shader compilation failed!" << std::endl;
-	}
-
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
-	if (!status)
-	{
-		glGetProgramInfoLog(shaderProgram, 1024, NULL, log);
-		std::cout << "Error! Could not link shader program!" << std::endl;
-	}
-	
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-    */
-
-    // /!\ This is relative to the specific build path of the IDE, change accordingly
+    // /!\ This is relative to the specific build path of the IDE, please change accordingly
     Shader ShaderLoader("../../potato-gfx/shaders/vertex.glsl", "../../potato-gfx/shaders/fragment.glsl");
 
 	//-------------------------------------------------
@@ -157,7 +94,6 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
         ShaderLoader.use();
-        //glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -166,11 +102,8 @@ int main()
 	}
 
 	// Resource de-allocation for a cleaner exit. This is optionnal as the OS should handle this automatically
-
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-    //glDeleteProgram(shaderProgram);
-
 	glfwTerminate();
 
 	return 0;
