@@ -41,8 +41,7 @@ int main()
 	// Shader compile functions
 	//-------------------------------------------------
 
-    // /!\ This is relative to the specific build path of the IDE, please change accordingly
-    Shader ShaderLoader("../../potato-gfx/shaders/vertex.glsl", "../../potato-gfx/shaders/fragment.glsl");
+    Shader ShaderLoader("vertex.glsl", "fragment.glsl");
 
 	//-------------------------------------------------
 	// Vertex data

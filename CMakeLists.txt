@@ -18,3 +18,6 @@ include_directories(vendor/glfw/include/
                     include/)
 
 target_link_libraries(${PROJECT_NAME} glad glfw)
+
+configure_file("shaders/vertex.glsl" "src/" COPYONLY)
+configure_file("shaders/fragment.glsl" "src/" COPYONLY)
