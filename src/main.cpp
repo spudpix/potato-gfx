@@ -94,16 +94,26 @@ int main()
     // Texture loading
     //-------------------------------------------------
 
-    unsigned int texture;
+    unsigned int texture1;
+    unsigned int texture2;
 
     int width;
     int height;
     int nrChannels;
 
-    unsigned char* image = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
+    unsigned char* image;
+
+    stbi_set_flip_vertically_on_load(true);
+ 
+    //-------------
+    // Texture 1
+    //-------------
+
+    image = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
+         
     // The usual glGen and glBind
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
     // Texture wrapping methods
     glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -123,6 +133,43 @@ int main()
     // Cleanup
     stbi_image_free(image);
 
+    //-------------
+    // Texture 2
+    //-------------
+
+    image = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
+
+    glGenTextures(1, &texture2);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+
+    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if (image)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cerr << "Texture loading failed" << std::endl;
+    }
+    
+    stbi_image_free(image);
+
+    //-------------------------------------------------
+    // Uniforms
+    //-------------------------------------------------
+
+    ShaderLoader.use();
+
+    // Passing the texture sampler location to OpenGL
+    glUniform1i(glGetUniformLocation(ShaderLoader.ID, "texture1"), 0);
+    glUniform1i(glGetUniformLocation(ShaderLoader.ID, "texture2"), 1);
+
     //-------------------------------------------------
     // Main render loop
     //-------------------------------------------------
@@ -132,7 +179,10 @@ int main()
         glClearColor(0.5f, 0.8f, 0.9f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture2);
 
         ShaderLoader.use();
 
