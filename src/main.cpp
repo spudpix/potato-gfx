@@ -137,7 +137,7 @@ int main()
     // Texture 2
     //-------------
 
-    image = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
+    image = stbi_load("PixelPotato512.png", &width, &height, &nrChannels, 0);
 
     glGenTextures(1, &texture2);
     glBindTexture(GL_TEXTURE_2D, texture2);
