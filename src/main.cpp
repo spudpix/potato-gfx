@@ -35,8 +35,8 @@ int main()
     glViewport(0, 0, 800, 600);		// Defines the size of the OpenGL rendering viewport, this is independent of window size
 
     // OpenGL version info and GPU currently in use
-    std::cerr << glGetString(GL_RENDERER) << std::endl;
-    std::cerr << "OPENGL VERSION: " << glGetString(GL_VERSION) << std::endl;
+    std::cout << glGetString(GL_RENDERER) << std::endl;
+    std::cout << "OPENGL VERSION: " << glGetString(GL_VERSION) << std::endl;
 
     //-------------------------------------------------
     // Shader compile functions
