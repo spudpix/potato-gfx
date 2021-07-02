@@ -12,12 +12,14 @@ option(GLFW_BUILD_TESTS OFF)
 
 add_subdirectory(depends/glfw/)
 add_subdirectory(depends/glad/)
+add_subdirectory(depends/glm/)
+
 add_subdirectory(src/)
 
 include_directories(vendor/glfw/include/
                     include/)
 
-target_link_libraries(${PROJECT_NAME} glad glfw)
+target_link_libraries(${PROJECT_NAME} glad glfw glm)
 
 configure_file("shaders/vertex.glsl" "src/" COPYONLY)
 configure_file("shaders/fragment.glsl" "src/" COPYONLY)

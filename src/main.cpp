@@ -1,5 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 
@@ -161,14 +164,22 @@ int main()
     stbi_image_free(image);
 
     //-------------------------------------------------
+    // GLM transforms
+    //-------------------------------------------------
+
+
+
+    //-------------------------------------------------
     // Uniforms
     //-------------------------------------------------
 
     ShaderLoader.use();
 
+
     // Passing the texture sampler location to OpenGL
     glUniform1i(glGetUniformLocation(ShaderLoader.ID, "texture1"), 0);
     glUniform1i(glGetUniformLocation(ShaderLoader.ID, "texture2"), 1);
+
 
     //-------------------------------------------------
     // Main render loop
@@ -176,6 +187,8 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
+        unsigned int transformLoc = glGetUniformLocation(ShaderLoader.ID, "transform");
+
         glClearColor(0.5f, 0.8f, 0.9f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -184,7 +197,14 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0f, 1.0f));
+        trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0f, 1.0f));
+
         ShaderLoader.use();
+
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
