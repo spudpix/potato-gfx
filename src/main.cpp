@@ -98,13 +98,6 @@ int main()
           -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
       };
 
-/*
-    unsigned int indices[] = {
-        0, 1, 3,
-        1, 2, 3
-    };
-*/
-
     glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f),
         glm::vec3( 2.0f,  5.0f, -15.0f),
@@ -139,20 +132,6 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-/*
-    glGenBuffers(1, &IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);	// Defines the data layout of the VBO and stores it in the VAO
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-*/
     glBindBuffer(GL_ARRAY_BUFFER, 0);	// we can unbind the VBO because it has be registered to the VAO using glVertexAttribPointer
 
     //-------------------------------------------------
@@ -231,6 +210,8 @@ int main()
 
     ShaderLoader.use();
 
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)800/(float)600, 0.1f, 100.0f);
+    ShaderLoader.setMat4("projection", projection);
 
     // Passing the texture sampler location to OpenGL
     glUniform1i(glGetUniformLocation(ShaderLoader.ID, "texture1"), 0);
@@ -254,13 +235,26 @@ int main()
         ShaderLoader.use();
 
         // Transforms
-        glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 projection = glm::mat4(1.0f);
+        const float radius = 10.0f;
+        float camX = sin(glfwGetTime()) * radius;
+        float camZ = cos(glfwGetTime()) * radius;
 
-        projection = glm::perspective(glm::radians(45.0f), (float)800/(float)600, 0.1f, 100.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        //glm::mat4 view = glm::mat4(1.0f);
+
+
+        // Camera
+        glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+        glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+        // Camera axis
+        glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+        glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+        glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+        // Look At matrice
+        glm::mat4 view;
+        //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         // Sending matrix data to shaders
-        ShaderLoader.setMat4("projection", projection);
         ShaderLoader.setMat4("view", view);
 
         glBindVertexArray(VAO);
@@ -270,10 +264,11 @@ int main()
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
             float angle = 20.f * i;
-            if(i % 4 == 0)
+
+            if(i >= 5)
                 angle = glfwGetTime() * 25.0f;
 
-            if(i % 3 == 0)
+            if(i <= 6)
                 angle = glfwGetTime() * -25.0f;
 
             model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
@@ -289,7 +284,6 @@ int main()
     // Resource de-allocation for a cleaner exit. This is optionnal as the OS should handle this automatically
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    //glDeleteBuffers(1, &IBO);
 
     glfwTerminate();
 
