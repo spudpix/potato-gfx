@@ -52,7 +52,6 @@ int main()
         return -1;
     }
 
-
     // Misc GL functions
     glViewport(0, 0, 800, 600);		// Defines the size of the OpenGL rendering viewport, this is independent of window size
     glEnable(GL_DEPTH_TEST);
