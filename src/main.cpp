@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -17,12 +18,19 @@ const unsigned int SCR_HEIGHT = 600;
 
 void processInput(GLFWwindow *window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+
 
 // camera
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
+bool firstmouse = true;
+float yaw = -90.0f;
+float pitch = 0.0f;
+float lastX = float(SCR_WIDTH) / 2.0;
+float lastY = float(SCR_HEIGHT) / 2.0;
 float fov = 45.0f;
 
 int main()
@@ -42,8 +50,11 @@ int main()
         return -1;
     }
 
+    // GLFW specific parameters
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))		// This function requires a valid OpenGL context 
     {
@@ -297,7 +308,10 @@ int main()
 }
 
 void processInput(GLFWwindow *window)
-{
+{    
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
     const float cameraSpeed = 2.5f * deltaTime;
 
     if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -314,4 +328,38 @@ void processInput(GLFWwindow *window)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstmouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstmouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;
+    lastX = xpos;
+    lastY = ypos;
+
+    float sensitivity = 0.01f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw += xoffset;
+    pitch += yoffset;
+
+    // Locking the Y axis to avoid going 360
+    if(pitch > 89.0f)
+        pitch = 89.0f;
+    if(pitch < -89.0)
+        pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw));
+    direction.y = sin(glm::radians(pitch)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
 }
