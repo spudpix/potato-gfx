@@ -1,0 +1,3 @@
+[submodule "depends/glfw"]
+	path = depends/glfw
+	url = https://github.com/spudpix/glfw.git
