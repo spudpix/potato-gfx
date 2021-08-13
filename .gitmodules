@@ -1,3 +1,8 @@
 [submodule "depends/glfw"]
 	path = depends/glfw
 	url = https://github.com/spudpix/glfw.git
+	branch = master
+[submodule "depends/glm"]
+	path = depends/glm
+	url = https://github.com/spudpix/glm.git
+	branch = master
