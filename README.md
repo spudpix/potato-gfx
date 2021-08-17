@@ -4,7 +4,7 @@ This repo includes abstractions and extra code not found in the tutorial found a
 
 ### Current stage: 
 
-![3-2a3503e9c6eb](https://user-images.githubusercontent.com/29679352/126135144-d788ba24-000f-43eb-bf7c-467aafa9ec3e.gif)
+![4-2a3503e9c6eb](https://user-images.githubusercontent.com/29679352/129731469-c4cfde08-67df-43f8-b00f-fdf10be6b7dd.gif)
 
 ### With some extra info in the console 
 
