@@ -26,7 +26,7 @@ glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-bool firstmouse = true;
+bool firstMouse = true;
 float yaw = -90.0f;
 float pitch = 0.0f;
 float lastX = float(SCR_WIDTH) / 2.0;
@@ -332,11 +332,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    if (firstmouse)
+    if (firstMouse)
     {
         lastX = xpos;
         lastY = ypos;
-        firstmouse = false;
+        firstMouse = false;
     }
 
     float xoffset = xpos - lastX;
@@ -344,7 +344,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
 
-    float sensitivity = 0.05f;
+    float sensitivity = 0.1f;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
@@ -359,7 +359,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
     glm::vec3 direction;
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw));
-    direction.y = sin(glm::radians(pitch)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     cameraFront = glm::normalize(direction);
 }
