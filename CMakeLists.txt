@@ -10,9 +10,9 @@ option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
 
-add_subdirectory(depends/glfw/)
-add_subdirectory(depends/glad/)
-add_subdirectory(depends/glm/)
+add_subdirectory(extern/glfw/)
+add_subdirectory(extern/glad/)
+add_subdirectory(extern/glm/)
 
 add_subdirectory(src/)
 
