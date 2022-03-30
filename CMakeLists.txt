@@ -6,6 +6,8 @@ endif()
 
 project(potato-gfx LANGUAGES CXX)
 
+set (CMAKE_CXX_STANDARD 11)
+
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)

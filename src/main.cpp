@@ -42,8 +42,8 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Creates the actual window, throws an error in case of failure
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Window", NULL, NULL);
-    if (window == NULL)
+    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Window", nullptr, nullptr);
+    if (window == nullptr)
     {
         std::cerr << "Error! Could not create GLFW window" << std::endl;
         glfwTerminate();

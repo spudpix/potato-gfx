@@ -32,7 +32,8 @@
 *.app
 
 # Directories
-out/
+/out
+/build
 
 # IDE
 /.vs
