@@ -37,4 +37,5 @@
 
 # IDE
 /.vs
+/.vscode
 *.user
